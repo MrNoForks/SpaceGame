@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import CoreMotion
 
 class GameScene: SKScene , SKPhysicsContactDelegate {
     
@@ -32,6 +33,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     
     let photonTorpedoCategory : UInt32 = 0x1 << 0
     //let photonTorpedoCategory : UInt32 = 1
+    
+    let motionManager = CMMotionManager()
+    var xAcceleration : CGFloat = 0
     
     override func didMove(to view: SKView) {
         
@@ -75,6 +79,15 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         gameTimer = Timer.scheduledTimer(timeInterval: 0.75, target: self, selector: #selector(addAlien), userInfo: nil, repeats: true)
         
+        
+        motionManager.accelerometerUpdateInterval = 0.2
+        
+        motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
+            if let accelerometerData = data {
+                let acceleration = accelerometerData.acceleration
+                self.xAcceleration = CGFloat(acceleration.x) * 0.75 + self.xAcceleration * 0.25
+            }
+        }
     }
     
     
@@ -206,6 +219,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         score += 5
         
+    }
+    
+    override func didSimulatePhysics() {
+        player.position.x += xAcceleration * 50
+        if player.position.x < -20 {
+            player.position = CGPoint(x: self.size.width + 20, y: player.position.y)
+        }
+        else if player.position.x > self.size.width * 20 {
+            player.position = CGPoint(x: -20,y: player.position.y)
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
