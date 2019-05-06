@@ -110,7 +110,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         self.addChild(alien)
         
-
+            //Moving aliens
+        let animationDuration = TimeInterval(Int.random(in: 5...8))
+        
+        //Moving alien from top to the bottom of the screen
+        //Then we will remove that alien from the screen  so it doesn't too much memory
+        
+        var actionArray = [SKAction]()
+        
+        actionArray.append(SKAction.move(to: CGPoint(x: position, y: -(self.frame.height/2)), duration: animationDuration))
+        
+        actionArray.append(SKAction.removeFromParent())
+        
+        alien.run(SKAction.sequence(actionArray))
     }
 
     
