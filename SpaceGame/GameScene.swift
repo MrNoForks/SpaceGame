@@ -26,6 +26,14 @@ class GameScene: SKScene {
         
         //So that is always behind everything we set z =-1
         starField.zPosition = -1
+        
+        
+        
+        player = SKSpriteNode(imageNamed: "shuttle")
+        
+        player.position = CGPoint(x: 0, y: -(size.height/2) + (player.size.height + 20))
+        
+        self.addChild(player)
     }
     
 
