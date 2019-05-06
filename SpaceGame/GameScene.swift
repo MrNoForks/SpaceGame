@@ -168,6 +168,46 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         fireTorpedo()
     }
     
+    func didBegin(_ contact: SKPhysicsContact) {
+        var firstBody : SKPhysicsBody
+        var secondBody : SKPhysicsBody
+        
+        //alienCategory = 2  and torpedo = 1
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask{
+            firstBody = contact.bodyA      // torpedo
+            secondBody = contact.bodyB     // alien
+        }
+        else{
+            firstBody = contact.bodyB       // torpedo
+            secondBody = contact.bodyA      // alien
+        }
+        // 1 & 1 = 1   , 2 & 2 = 1 , 1 & 2 = 0
+        if (firstBody.categoryBitMask & photonTorpedoCategory) != 0 && (secondBody.categoryBitMask & alienCategory) != 0{
+            torpedoDidCollideWithAlien(torpedoNode: firstBody.node as! SKSpriteNode, alienNode: secondBody.node as! SKSpriteNode)
+        }
+    }
+    
+    
+    func torpedoDidCollideWithAlien(torpedoNode : SKSpriteNode , alienNode : SKSpriteNode){
+        
+        let explosion = SKEmitterNode(fileNamed: "Explosion")!
+        
+        explosion.position = alienNode.position
+        
+        self.addChild(explosion)
+        
+        self.run(SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: false))
+        
+        torpedoNode.removeFromParent()
+        
+        alienNode.removeFromParent()
+        
+        self.run(SKAction.wait(forDuration: 2)){explosion.removeFromParent()}
+        
+        score += 5
+        
+    }
+    
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
