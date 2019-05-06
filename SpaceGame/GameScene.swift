@@ -50,6 +50,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         player = SKSpriteNode(imageNamed: "shuttle")
         
+        player.setScale(2)
+        
         player.position = CGPoint(x: 0, y: -(size.height/2) + (player.size.height + 20))
         
         self.addChild(player)
@@ -107,6 +109,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         alien.physicsBody?.categoryBitMask = alienCategory
         alien.physicsBody?.contactTestBitMask = photonTorpedoCategory
         alien.physicsBody?.collisionBitMask = 0
+        
+        alien.setScale(2)
         
         self.addChild(alien)
         
