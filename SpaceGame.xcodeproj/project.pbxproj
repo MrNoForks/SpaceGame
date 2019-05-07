@@ -77,8 +77,7 @@
 				9B1F1395228012C900F9A349 /* AppDelegate.swift */,
 				9B1F139D228012C900F9A349 /* GameViewController.swift */,
 				9B1F1399228012C900F9A349 /* Actions.sks */,
-				9B67476522815A8C00AEFCFB /* MainScene.sks */,
-				9B67476722815CFB00AEFCFB /* MenuScene.swift */,
+				9B6747692281960700AEFCFB /* Menu */,
 				9B1F139F228012C900F9A349 /* Main.storyboard */,
 				9B1F13A2228012CA00F9A349 /* Assets.xcassets */,
 				9B1F13A4228012CA00F9A349 /* LaunchScreen.storyboard */,
@@ -116,6 +115,15 @@
 				9B1F13B22280140700F9A349 /* Starfield.sks */,
 			);
 			path = Emitters;
+			sourceTree = "<group>";
+		};
+		9B6747692281960700AEFCFB /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				9B67476522815A8C00AEFCFB /* MainScene.sks */,
+				9B67476722815CFB00AEFCFB /* MenuScene.swift */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

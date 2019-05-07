@@ -37,7 +37,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     let motionManager = CMMotionManager()
     var xAcceleration : CGFloat = 0
     
+    var livesArray = [SKSpriteNode]()
+    
     override func didMove(to view: SKView) {
+        
+        addLives()
         
         starField = SKEmitterNode(fileNamed: "Starfield")
        
@@ -77,8 +81,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         self.addChild(scoreLabel)
         
+        var timeInterVal : TimeInterval = 0.75
         
-        gameTimer = Timer.scheduledTimer(timeInterval: 0.75, target: self, selector: #selector(addAlien), userInfo: nil, repeats: true)
+        if UserDefaults.standard.bool(forKey: "Hard"){
+            timeInterVal = 0.3
+        }
+        
+        gameTimer = Timer.scheduledTimer(timeInterval: timeInterVal, target: self, selector: #selector(addAlien), userInfo: nil, repeats: true)
         
         
         motionManager.accelerometerUpdateInterval = 0.2
@@ -92,6 +101,20 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         }
     }
     
+    func addLives(){
+        
+        for live in stride(from: 3, through: 1, by: -1) {
+            
+            let liveNode = SKSpriteNode(imageNamed: "shuttle")
+            
+            liveNode.position = CGPoint(x: size.width - (CGFloat(live) * liveNode.size.width), y: CGFloat(size.height - 70))
+            
+            self.addChild(liveNode)
+            
+            livesArray.append(liveNode)
+        }
+        
+    }
     
     @objc func addAlien(){
         
@@ -198,13 +221,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         }
         // 1 & 1 = 1   , 2 & 2 = 1 , 1 & 2 = 0
         if (firstBody.categoryBitMask & photonTorpedoCategory) != 0 && (secondBody.categoryBitMask & alienCategory) != 0{
-            torpedoDidCollideWithAlien(torpedoNode: firstBody.node as! SKSpriteNode, alienNode: secondBody.node as! SKSpriteNode)
+            torpedoDidCollideWithAlien(torpedoNode: firstBody.node as? SKSpriteNode, alienNode: secondBody.node as? SKSpriteNode)
         }
     }
     
     
-    func torpedoDidCollideWithAlien(torpedoNode : SKSpriteNode , alienNode : SKSpriteNode){
-        
+    func torpedoDidCollideWithAlien(torpedoNode : SKSpriteNode? , alienNode : SKSpriteNode?){
+        guard let torpedoNode = torpedoNode ,let alienNode = alienNode else{return}
         let explosion = SKEmitterNode(fileNamed: "Explosion")!
         
         explosion.position = alienNode.position
