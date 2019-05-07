@@ -162,6 +162,35 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         actionArray.append(SKAction.move(to: CGPoint(x: position, y: 0), duration: animationDuration))
         
+        actionArray.append(SKAction.run { [unowned self] in
+            
+            self.run(SKAction.playSoundFileNamed("loose.mp3", waitForCompletion: false))
+            
+            if self.livesArray.count > 0 {
+                
+                let liveNode = self.livesArray.first
+                
+                liveNode!.removeFromParent()
+                
+                self.livesArray.removeFirst()
+                
+                if self.livesArray.count == 0{
+                    let transition = SKTransition.flipHorizontal(withDuration: 1)
+                    
+                   let gameOver = SKScene(fileNamed: "GameOver") as! GameOver
+                    
+                    gameOver.scaleMode = .aspectFill
+                    
+                    gameOver.score = self.score
+                    
+
+                    self.view?.presentScene(gameOver, transition: transition)
+                }
+            }
+            
+        })
+        
+        
         actionArray.append(SKAction.removeFromParent())
         
         alien.run(SKAction.sequence(actionArray))

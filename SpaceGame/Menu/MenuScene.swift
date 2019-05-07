@@ -66,6 +66,8 @@ class MenuScene: SKScene {
                 
                 let gameScene = GameScene(size: self.size)
                 
+                gameScene.scaleMode = .aspectFill
+                
                 //Transitions from the current scene to a new scene.
                 self.view?.presentScene(gameScene, transition: transition)
             }
