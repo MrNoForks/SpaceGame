@@ -40,7 +40,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         
         starField = SKEmitterNode(fileNamed: "Starfield")
-        starField.position = CGPoint(x: 0, y: size.height)
+       
+        starField.position = CGPoint(x: size.width/2, y: size.height)
         
         // To advancce the fall of stars by 10 seconds
         starField.advanceSimulationTime(10)
@@ -56,7 +57,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         player.setScale(2)
         
-        player.position = CGPoint(x: 0, y: -(size.height/2) + (player.size.height + 20))
+        player.position = CGPoint(x: 0, y: 50)
         
         self.addChild(player)
         
@@ -69,7 +70,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         scoreLabel = SKLabelNode(text: "Score : 0")
         
-        scoreLabel.position = CGPoint(x : 0,y : (size.height/2) - 100)
+        scoreLabel.position = CGPoint(x : size.width/2,y : (size.height) - 100)
         scoreLabel.fontName = "AppleSDGothicNeo-Medium"
         scoreLabel.fontSize = 36
         scoreLabel.fontColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -105,11 +106,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
       //  let position =  arc4random_uniform(UInt32(size.height/2))
         
         // Now when we select a random position for aliens using GameplayKit
-        let randomAlienPosition = GKRandomDistribution(lowestValue: -(Int(size.height/2)), highestValue: Int(size.height/2))
+        let randomAlienPosition = GKRandomDistribution(lowestValue: 20, highestValue: Int(size.width - 20))
         
         let position = CGFloat(randomAlienPosition.nextInt())
         
-        alien.position = CGPoint(x: position, y: (size.height/2) - alien.size.height)
+        alien.position = CGPoint(x: position, y: (size.height) - alien.size.height)
         
         
         // To add a physicsbody to alien
@@ -136,7 +137,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         var actionArray = [SKAction]()
         
-        actionArray.append(SKAction.move(to: CGPoint(x: position, y: -(self.frame.height/2)), duration: animationDuration))
+        actionArray.append(SKAction.move(to: CGPoint(x: position, y: 0), duration: animationDuration))
         
         actionArray.append(SKAction.removeFromParent())
         
@@ -171,7 +172,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         
         var actionArray = [SKAction]()
         
-        actionArray.append(SKAction.move(to: CGPoint(x: player.position.x, y: +(self.frame.height/2)), duration: animationDuration))
+        actionArray.append(SKAction.move(to: CGPoint(x: player.position.x, y: size.height), duration: animationDuration))
         
         actionArray.append(SKAction.removeFromParent())
         
@@ -224,11 +225,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     
     override func didSimulatePhysics() {
         player.position.x += xAcceleration * 25
-        if player.position.x < -(self.frame.width/2) {
-            player.position = CGPoint(x: (self.size.width/2 - 20), y: player.position.y)
+        if player.position.x < 0 {
+            player.position = CGPoint(x: (size.width - 20), y: player.position.y)
         }
-        else if player.position.x > (self.size.width/2) {
-            player.position = CGPoint(x: (-(self.size.width/2) + 20),y: player.position.y)
+        else if player.position.x > size.width {
+            player.position = CGPoint(x: 20,y: player.position.y)
         }
      //   print(self.xAcceleration)
     }
