@@ -37,6 +37,15 @@ class MenuScene: SKScene {
         difficultyLabelNode = self.childNode(withName: "difficultyLabel") as? SKLabelNode
         
         
+        let userDefaults = UserDefaults.standard
+        
+        //Getting UserDefaults Value
+        if userDefaults.bool(forKey: "Hard"){
+            difficultyLabelNode.text = "Hard"
+        }
+        else{
+            difficultyLabelNode.text = "Easy"
+        }
     }
     
     
@@ -73,6 +82,7 @@ class MenuScene: SKScene {
         
         //UserDefaults To save the game mode
         //UserDefault is thread safe and it caches the data so it doesnt have to relookup UserDefault database
+        //Max size 1 MB and 1024 keys allowed if exceeded it sends a notification warning
         
         //UserDefaults.standard creates a shared instance of User Default
         let userDefaults = UserDefaults.standard
