@@ -85,7 +85,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
         motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
             if let accelerometerData = data {
                 let acceleration = accelerometerData.acceleration
-                self.xAcceleration = CGFloat(acceleration.x) * 0.75 + self.xAcceleration * 0.25
+               //self.xAcceleration = CGFloat(acceleration.x) * 0.75 + self.xAcceleration * 0.25
+                self.xAcceleration = CGFloat(acceleration.x)
             }
         }
     }
@@ -222,13 +223,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate {
     }
     
     override func didSimulatePhysics() {
-        player.position.x += xAcceleration * 50
-        if player.position.x < -20 {
-            player.position = CGPoint(x: self.size.width + 20, y: player.position.y)
+        player.position.x += xAcceleration * 25
+        if player.position.x < -(self.frame.width/2) {
+            player.position = CGPoint(x: (self.size.width/2 - 20), y: player.position.y)
         }
-        else if player.position.x > self.size.width * 20 {
-            player.position = CGPoint(x: -20,y: player.position.y)
+        else if player.position.x > (self.size.width/2) {
+            player.position = CGPoint(x: (-(self.size.width/2) + 20),y: player.position.y)
         }
+     //   print(self.xAcceleration)
     }
     
     override func update(_ currentTime: TimeInterval) {
