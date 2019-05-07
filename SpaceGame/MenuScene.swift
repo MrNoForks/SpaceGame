@@ -57,11 +57,47 @@ class MenuScene: SKScene {
                 
                 let gameScene = GameScene(size: self.size)
                 
+                //Transitions from the current scene to a new scene.
                 self.view?.presentScene(gameScene, transition: transition)
+            }
+            
+            else if nodesArray.first?.name == "difficultyButton"{
+                changeDifficulty()
             }
             
         }
     }
     
+    
+    func changeDifficulty(){
+        
+        //UserDefaults To save the game mode
+        //UserDefault is thread safe and it caches the data so it doesnt have to relookup UserDefault database
+        
+        //UserDefaults.standard creates a shared instance of User Default
+        let userDefaults = UserDefaults.standard
+        
+        if difficultyLabelNode.text == "Easy"{
+            
+            difficultyLabelNode.text = "Hard"
+            
+            //Setting userDefaults Value
+            userDefaults.set(true, forKey: "Hard")
+            
+        }
+        else{
+            
+            difficultyLabelNode.text = "Easy"
+            
+            //Setting userDefaults Value
+            userDefaults.set(false, forKey: "Hard")
+        }
+        
+        
+        //Waits for any pending asynchronous updates to the defaults database and returns; this method is unnecessary and shouldn't be used.
+        //true if the data was saved successfully to disk, otherwise false.
+        // userDefaults.synchronize()
+        
+    }
     
 }
